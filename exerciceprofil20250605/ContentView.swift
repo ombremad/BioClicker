@@ -97,7 +97,7 @@ struct ContentView: View {
                     VStack {
                         HStack {
                             Button(action: {
-                                if truncatedStory >= (10 * bonusUsed) {
+                                if truncatedStory >= 10 * bonusUsed {
                                     truncatedStory -= 10 * bonusUsed
                                     bonusUsed += 1
                                     clicForce += 1
@@ -140,8 +140,12 @@ struct ContentView: View {
                                     Text("Cette biographie est générée par ChatGPT. Elle a été relue et corrigée pour ne contenir que des informations exactes, mais reste rédigée dans un style hagiographique.")
                                 case 50..<100:
                                     Text("C'est long... continue un peu, et je pourrai peut-être t'aider.")
-                                case 100..<120:
+                                case 100..<130:
                                     Text("Voilà un peu d'aide pour accomplir ta mission !")
+                                case 300..<400:
+                                    Text("Tu crois au moins qu'il y a un truc spécial à la fin ?")
+                                case UInt(petiteHistoire.count)...:
+                                    Text("Bravo ! C'est fini.")
                                 default:
                                     Text("")
                             }
