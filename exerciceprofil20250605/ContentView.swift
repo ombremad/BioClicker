@@ -9,8 +9,14 @@ import SwiftUI
 
 struct ContentView: View {
             
+    // Animation
     @State private var rotationProfile : Double = 0
-    @State private var truncatedStory : Int = 13
+    
+    // Game
+    @State private var truncatedStory : UInt = 15
+    @State private var totalClics : UInt = 0
+    @State private var clicForce : UInt = 1
+    @State private var bonusUsed : UInt = 1
     
     func iconBackground() -> some View {
         LazyVGrid(columns: columns) {
@@ -87,39 +93,67 @@ struct ContentView: View {
     func bioGame() -> some View {
         Section(header: Text("Biographie")) {
             NavigationLink {
-                ScrollView {
-                    Text(petiteHistoire.prefix(truncatedStory))
-                        .multilineTextAlignment(.leading)
-                        .padding()
-                }
-                .defaultScrollAnchor(.bottom)
-                Spacer()
-                ZStack {
+                if totalClics >= 100 {
                     VStack {
-                        VStack(alignment:.leading) {
-                            if truncatedStory >= 300 {
-                                Text("Cette biographie est générée par ChatGPT. Elle contient des informations inexactes.")
+                        HStack {
+                            Button(action: {
+                                if truncatedStory >= (10 * bonusUsed) {
+                                    truncatedStory -= 10 * bonusUsed
+                                    bonusUsed += 1
+                                    clicForce += 1
+                                }
+                            }, label: {
+                                VStack(spacing: 6) {
+                                    Text("\(Image(systemName: "hand.tap.fill")) +1")
+                                    Text("Coût **\(10 * bonusUsed)** \(Image(systemName: "character.square"))")
+                                        .font(.caption)
+                                }
+                            })
+                            .padding()
+                            .foregroundStyle(Color.white)
+                            .background {
+                                RoundedRectangle(cornerRadius: 90)
+                                    .fill(Color.orange)
                             }
-                            if truncatedStory >= 500 {
-                                Text("\nCependant, certaines informations sont tout de même correctes.")
+                            Spacer()
+                            HStack {
+                                Image(systemName: "hand.tap.fill")
+                                Text("\(clicForce)")
                             }
-                            if truncatedStory >= 800 {
-                                Text("La plupart, d'ailleurs.")
-                            }
-                            if truncatedStory >= 1200 {
-                                Text("À vous de distinguer le vrai du faux.")
-                            }
-                            if truncatedStory >= 2000 {
-                                Text("\n...c'est long, non ?")
+                            .font(.title)
+                        }
+                    }
+                    .padding()
+                }
+                
+                    ScrollView {
+                        Text(petiteHistoire.prefix(Int(truncatedStory)))
+                            .multilineTextAlignment(.leading)
+                            .padding()
+                    }
+                    .defaultScrollAnchor(.bottom)
+                    Spacer()
+                    VStack {
+                        VStack {
+                            switch totalClics {
+                                case 20..<50:
+                                    Text("Cette biographie est générée par ChatGPT. Elle a été relue et corrigée pour ne contenir que des informations exactes, mais reste rédigée dans un style hagiographique.")
+                                case 50..<100:
+                                    Text("C'est long... continue un peu, et je pourrai peut-être t'aider.")
+                                case 100..<120:
+                                    Text("Voilà un peu d'aide pour accomplir ta mission !")
+                                default:
+                                    Text("")
                             }
                         }
                         .font(.caption)
                         .foregroundStyle(Color.primary.opacity(0.6))
                         .padding()
-
+                        
                         Button(action: {
                             if truncatedStory <= petiteHistoire.count {
-                                truncatedStory += Int.random(in:1...8)
+                                truncatedStory += clicForce
+                                totalClics += 1
                             }
                         }, label: {
                             Text("En lire plus")
@@ -131,19 +165,18 @@ struct ContentView: View {
                                         .fill(Color.accentColor)
                                 }
                         })
+                }
+                } label: {
+                    HStack {
+                        Image(systemName: "person.fill")
+                            .resizable()
+                            .aspectRatio(contentMode: .fit)
+                            .frame(width: 20, height: 20)
+                        Text("En savoir plus")
                     }
                 }
-            } label: {
-                HStack {
-                    Image(systemName: "person.fill")
-                        .resizable()
-                        .aspectRatio(contentMode: .fit)
-                        .frame(width: 20, height: 20)
-                    Text("En savoir plus")
-                }
             }
-        }
-    }
+}
     
     func otherActivities() -> some View {
         Section(header: Text("Autres activités")) {

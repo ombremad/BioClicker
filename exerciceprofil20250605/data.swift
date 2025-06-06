@@ -16,11 +16,11 @@ Anne Ferret est une figure aux multiples facettes, oscillant entre journalisme t
 
 Des débuts dans le journalisme technologique
 ---
-Anne Ferret a entamé sa carrière en tant que rédactrice principale chez Freenews, un site d'actualités dédié aux technologies et aux télécommunications. De 2009 à 2020, elle a couvert de nombreux événements majeurs, notamment les conférences d'Apple, offrant des analyses pointues et critiques sur les innovations de la firme de Cupertino . Son expertise et sa plume acérée ont fait d'elle une référence dans le domaine du journalisme high-tech.
+Anne Ferret a entamé sa carrière en tant que rédactrice principale chez Freenews, un site d'actualités dédié aux technologies et aux télécommunications. De 2009 à 2020, elle a couvert de nombreux événements majeurs, notamment les conférences d'Apple, offrant des analyses pointues et critiques sur les innovations de la firme de Cupertino. Son expertise et sa plume acérée ont fait d'elle une référence dans le domaine du journalisme high-tech.
 
 Transition vers le développement iOS
 ---
-Parallèlement à sa carrière journalistique, Anne Ferret s'est formée au développement iOS, maîtrisant des langages tels que Swift et Objective-C. Elle a notamment contribué à l'amélioration de l'application Freebox Compagnon, permettant aux utilisateurs de gérer leur Freebox à distance . Son implication dans le développement mobile témoigne de sa polyvalence et de sa capacité à évoluer dans des domaines techniques pointus.
+Parallèlement à sa carrière journalistique, Anne Ferret s'est formée au développement iOS, notamment via le langage Swift. Elle a suivi les formations Apple Foundation Program et Apple Foundation Program Extended en 2022, puis en 2025, s'est lancée dans une formation longue (l'Apple Foundation Program Advanced) sur 19 mois dont un an d'alternance, afin de décrocher le titre professionnel de conceptrice développeuse d'applications. Son implication dans le développement mobile témoigne de sa polyvalence et de sa capacité à évoluer dans des domaines techniques pointus.
 
 Littérature
 ---
