@@ -83,6 +83,7 @@ struct ContentView: View {
             .foregroundStyle(.primary)
         }
     }
+    
     func bioGame() -> some View {
         Section(header: Text("Biographie")) {
             NavigationLink {
@@ -143,6 +144,7 @@ struct ContentView: View {
             }
         }
     }
+    
     func otherActivities() -> some View {
         Section(header: Text("Autres activités")) {
             HStack {
