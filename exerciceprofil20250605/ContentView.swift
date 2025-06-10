@@ -14,7 +14,7 @@ struct ContentView: View {
     
     // Game
     @State private var truncatedStory : UInt = 15
-    @State private var totalClics : UInt = 0
+    @State private var totalClics : UInt = 110
     @State private var clicForce : UInt = 1
     @State private var bonusUsed : UInt = 1
     
@@ -90,48 +90,45 @@ struct ContentView: View {
         }
     }
     
-    func bioGame() -> some View {
-        Section(header: Text("Biographie")) {
-            NavigationLink {
-                if totalClics >= 100 {
-                    VStack {
-                        HStack {
-                            Button(action: {
-                                if truncatedStory >= 10 * bonusUsed {
-                                    truncatedStory -= 10 * bonusUsed
-                                    bonusUsed += 1
-                                    clicForce += 1
-                                }
-                            }, label: {
-                                VStack(spacing: 6) {
-                                    Text("\(Image(systemName: "hand.tap.fill")) +1")
-                                    Text("Coût **\(10 * bonusUsed)** \(Image(systemName: "character.square"))")
-                                        .font(.caption)
-                                }
-                            })
-                            .padding()
-                            .foregroundStyle(Color.white)
-                            .background {
-                                RoundedRectangle(cornerRadius: 90)
-                                    .fill(Color.orange)
+    func gameBar() -> some View {
+            VStack {
+                ZStack {
+                    HStack {
+                        Button(action: {
+                            if truncatedStory >= 10 * bonusUsed {
+                                truncatedStory -= 10 * bonusUsed
+                                bonusUsed += 1
+                                clicForce += 1
                             }
-                            Spacer()
-                            HStack {
-                                Image(systemName: "hand.tap.fill")
-                                Text("\(clicForce)")
+                        }, label: {
+                            VStack(spacing: 6) {
+                                Text("\(Image(systemName: "hand.tap.fill")) +1")
+                                Text("Coût **\(10 * bonusUsed)** \(Image(systemName: "character.square"))")
+                                    .font(.caption)
                             }
-                            .font(.title)
+                        })
+                        .padding()
+                        .foregroundStyle(Color.white)
+                        .background {
+                            RoundedRectangle(cornerRadius: 90)
+                                .fill(Color.orange)
                         }
+                        Spacer()
+                        HStack {
+                            Image(systemName: "hand.tap.fill")
+                            Text("\(clicForce)")
+                        }
+                        .font(.title)
                     }
                     .padding()
                 }
-                
-                    ScrollView {
-                        Text(petiteHistoire.prefix(Int(truncatedStory)))
-                            .multilineTextAlignment(.leading)
-                            .padding()
-                    }
-                    .defaultScrollAnchor(.bottom)
+                .background(.regularMaterial)
+            }
+    }
+    func gameBottom() -> some View {
+        VStack {
+            ZStack {
+                HStack {
                     Spacer()
                     VStack {
                         VStack {
@@ -169,17 +166,40 @@ struct ContentView: View {
                                         .fill(Color.accentColor)
                                 }
                         })
-                }
-                } label: {
-                    HStack {
-                        Image(systemName: "person.fill")
-                            .resizable()
-                            .aspectRatio(contentMode: .fit)
-                            .frame(width: 20, height: 20)
-                        Text("En savoir plus")
                     }
+                    Spacer()
                 }
             }
+            .background(.regularMaterial)
+        }
+    }
+    func bioGame() -> some View {
+        
+        Section(header: Text("Biographie")) {
+            NavigationLink {
+                
+                if totalClics >= 100 {
+                    gameBar()
+                }
+                ScrollView {
+                    Text(petiteHistoire.prefix(Int(truncatedStory)))
+                        .multilineTextAlignment(.leading)
+                        .padding()
+                }
+                .defaultScrollAnchor(.bottom)
+                Spacer()
+                gameBottom()
+                
+            } label: {
+                HStack {
+                    Image(systemName: "person.fill")
+                        .resizable()
+                        .aspectRatio(contentMode: .fit)
+                        .frame(width: 20, height: 20)
+                    Text("En savoir plus")
+                }
+            }
+        }
 }
     
     func otherActivities() -> some View {
