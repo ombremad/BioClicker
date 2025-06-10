@@ -11,10 +11,12 @@ struct ContentView: View {
             
     // Animation
     @State private var rotationProfile : Double = 0
+    @State private var gameBarOpacity : Double = 0
+    @State private var gameBottomOpacity : Double = 0
     
     // Game
     @State private var truncatedStory : UInt = 15
-    @State private var totalClics : UInt = 110
+    @State private var totalClics : UInt = 98
     @State private var clicForce : UInt = 1
     @State private var bonusUsed : UInt = 1
     
@@ -124,6 +126,12 @@ struct ContentView: View {
                 }
                 .background(.regularMaterial)
             }
+            .opacity(gameBarOpacity)
+            .onAppear() {
+                withAnimation(.easeInOut(duration: 1)) {
+                    gameBarOpacity = 1
+                }
+            }
     }
     func gameBottom() -> some View {
         VStack {
@@ -135,6 +143,12 @@ struct ContentView: View {
                             switch totalClics {
                                 case 20..<50:
                                     Text("Cette biographie est générée par ChatGPT. Elle a été relue et corrigée pour ne contenir que des informations exactes, mais reste rédigée dans un style hagiographique.")
+                                        .opacity(gameBottomOpacity)
+                                        .onAppear() {
+                                            withAnimation(.easeInOut(duration: 1)) {
+                                                gameBottomOpacity = 1
+                                            }
+                                        }
                                 case 50..<100:
                                     Text("C'est long... continue un peu, et je pourrai peut-être t'aider.")
                                 case 100..<130:
