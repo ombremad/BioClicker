@@ -11,14 +11,9 @@ struct ContentView: View {
             
     // Animation
     @State private var rotationProfile : Double = 0
-    @State private var gameBarOpacity : Double = 0
-    @State private var gameBottomOpacity : Double = 0
     
     // Game
-    @State private var truncatedStory : UInt = 15
-    @State private var totalClics : UInt = 98
-    @State private var clicForce : UInt = 1
-    @State private var bonusUsed : UInt = 1
+    @State var gameData = GameData()
     
     func iconBackground() -> some View {
         LazyVGrid(columns: columns) {
@@ -97,15 +92,15 @@ struct ContentView: View {
                 ZStack {
                     HStack {
                         Button(action: {
-                            if truncatedStory >= 10 * bonusUsed {
-                                truncatedStory -= 10 * bonusUsed
-                                bonusUsed += 1
-                                clicForce += 1
+                            if gameData.characters >= 10 * gameData.bonusCost {
+                                gameData.characters -= 10 * gameData.bonusCost
+                                gameData.bonusCost += 1
+                                gameData.bonusForce += 1
                             }
                         }, label: {
                             VStack(spacing: 6) {
                                 Text("\(Image(systemName: "hand.tap.fill")) +1")
-                                Text("Coût **\(10 * bonusUsed)** \(Image(systemName: "character.square"))")
+                                Text("Coût **\(10 * gameData.bonusCost)** \(Image(systemName: "character.square"))")
                                     .font(.caption)
                             }
                         })
@@ -118,19 +113,13 @@ struct ContentView: View {
                         Spacer()
                         HStack {
                             Image(systemName: "hand.tap.fill")
-                            Text("\(clicForce)")
+                            Text("\(gameData.bonusCost)")
                         }
                         .font(.title)
                     }
                     .padding()
                 }
                 .background(.regularMaterial)
-            }
-            .opacity(gameBarOpacity)
-            .onAppear() {
-                withAnimation(.easeInOut(duration: 1)) {
-                    gameBarOpacity = 1
-                }
             }
     }
     func gameBottom() -> some View {
@@ -140,22 +129,16 @@ struct ContentView: View {
                     Spacer()
                     VStack {
                         VStack {
-                            switch totalClics {
+                            switch gameData.clicks {
                                 case 20..<50:
                                     Text("Cette biographie est générée par ChatGPT. Elle a été relue et corrigée pour ne contenir que des informations exactes, mais reste rédigée dans un style hagiographique.")
-                                        .opacity(gameBottomOpacity)
-                                        .onAppear() {
-                                            withAnimation(.easeInOut(duration: 1)) {
-                                                gameBottomOpacity = 1
-                                            }
-                                        }
                                 case 50..<100:
                                     Text("C'est long... continue un peu, et je pourrai peut-être t'aider.")
                                 case 100..<130:
                                     Text("Voilà un peu d'aide pour accomplir ta mission !")
                                 case 300..<400:
                                     Text("Tu crois au moins qu'il y a un truc spécial à la fin ?")
-                                case UInt(petiteHistoire.count)...:
+                                case UInt(gameData.bio.count)...:
                                     Text("Bravo ! C'est fini.")
                                 default:
                                     Text("")
@@ -166,9 +149,9 @@ struct ContentView: View {
                         .padding()
                         
                         Button(action: {
-                            if truncatedStory <= petiteHistoire.count {
-                                truncatedStory += clicForce
-                                totalClics += 1
+                            if gameData.characters <= gameData.bio.count {
+                                gameData.characters += gameData.bonusForce
+                                gameData.clicks += 1
                             }
                         }, label: {
                             Text("En lire plus")
@@ -187,18 +170,22 @@ struct ContentView: View {
             .background(.regularMaterial)
         }
     }
-    func bioGame() -> some View {
+    func gameView() -> some View {
         
-        Section(header: Text("Biographie")) {
+        Section(header: Text("Wanna play?")) {
             NavigationLink {
                 
-                if totalClics >= 100 {
+                if gameData.clicks >= 100 {
                     gameBar()
                 }
                 ScrollView {
-                    Text(petiteHistoire.prefix(Int(truncatedStory)))
-                        .multilineTextAlignment(.leading)
-                        .padding()
+                    HStack {
+                        Text(gameData.bio.prefix(Int(gameData.characters)))
+                            .multilineTextAlignment(.leading)
+                            .allowsTightening(false)
+                            .padding()
+                        Spacer()
+                    }
                 }
                 .defaultScrollAnchor(.bottom)
                 Spacer()
@@ -206,11 +193,11 @@ struct ContentView: View {
                 
             } label: {
                 HStack {
-                    Image(systemName: "person.fill")
+                    Image(systemName: "cursorarrow.click.2")
                         .resizable()
                         .aspectRatio(contentMode: .fit)
                         .frame(width: 20, height: 20)
-                    Text("En savoir plus")
+                    Text("BioClicker")
                 }
             }
         }
@@ -246,8 +233,8 @@ struct ContentView: View {
         NavigationStack {
             List {
                 header()
+                gameView()
                 blockQuote()
-                bioGame()
                 otherActivities()
             }
         }
