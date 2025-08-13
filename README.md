@@ -21,7 +21,7 @@ It's an obvious nod to the well-known [Cookie Clicker](https://orteil.dashnet.or
 ### Who did it?
 It's a 100% personal project.
 
-The long wall of text was generated with the help of ChatGPT through some specific prompts to make it longer than it really should. It was then proofread and corrected to only contain genuine information.
+The long wall of text was generated with the help of [ChatGPT](https://chatgpt.com) through some specific prompts to make it longer than it really should. It was then proofread and corrected to only contain genuine information.
 
 ### When?
 - The initial iOS SwiftUI project was made in a day, in May 2025, during Apple Foundation Program Advanced.
