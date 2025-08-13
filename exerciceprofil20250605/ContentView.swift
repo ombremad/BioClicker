@@ -9,10 +9,7 @@ import SwiftUI
 
 struct ContentView: View {
             
-    // Animation
-    @State private var rotationProfile : Double = 0
-    
-    // Game
+    @State private var pictureRotation : Double = 0
     @State var gameData = GameData()
     
     func iconBackground() -> some View {
@@ -41,10 +38,10 @@ struct ContentView: View {
                             .aspectRatio(contentMode: .fit)
                             .frame(width: 140, height: 140)
                             .clipShape(Circle())
-                            .rotation3DEffect(.degrees(rotationProfile), axis: (x: 0, y: 1, z: 1))
+                            .rotation3DEffect(.degrees(pictureRotation), axis: (x: 0, y: 1, z: 1))
                             .onTapGesture {
                                 withAnimation(.easeInOut(duration: 1.2)) {
-                                    rotationProfile += 1080
+                                    pictureRotation += 1080
                                 }
                             }
                 }
@@ -63,8 +60,8 @@ struct ContentView: View {
     }
         
     }
-    func blockQuote() -> some View {
-        Section(header: Text("Citation")) {
+    func favQuote() -> some View {
+        Section(header: Text("Favourite quote")) {
             Link(destination: URL(string:"https://music.apple.com/nl/album/n-i-b/1438648677?i=1438648681")!,
                  label: {
             HStack(spacing: 20) {
@@ -86,7 +83,6 @@ struct ContentView: View {
             .foregroundStyle(.primary)
         }
     }
-    
     func gameBar() -> some View {
             VStack {
                 ZStack {
@@ -100,7 +96,7 @@ struct ContentView: View {
                         }, label: {
                             VStack(spacing: 6) {
                                 Text("\(Image(systemName: "hand.tap.fill")) +1")
-                                Text("Coût **\(10 * gameData.bonusCost)** \(Image(systemName: "character.square"))")
+                                Text("Cost **\(10 * gameData.bonusCost)** \(Image(systemName: "character.square"))")
                                     .font(.caption)
                             }
                         })
@@ -130,16 +126,14 @@ struct ContentView: View {
                     VStack {
                         VStack {
                             switch gameData.clicks {
-                                case 20..<50:
-                                    Text("Cette biographie est générée par ChatGPT. Elle a été relue et corrigée pour ne contenir que des informations exactes, mais reste rédigée dans un style hagiographique.")
-                                case 50..<100:
-                                    Text("C'est long... continue un peu, et je pourrai peut-être t'aider.")
-                                case 100..<130:
-                                    Text("Voilà un peu d'aide pour accomplir ta mission !")
+                                case 10..<70:
+                                    Text("This bio was written by ChatGPT. It's been proofread, corrected, and now only contains genuine information. Although it's still in written in a style of almost comically inflated hagiography.")
+                                case 70..<100:
+                                    Text("Is it still long? Just go on for a bit, and I'll see how I can help.")
                                 case 300..<400:
-                                    Text("Tu crois au moins qu'il y a un truc spécial à la fin ?")
+                                    Text("Do you think there's at least something special waiting at the end?")
                                 case UInt(gameData.bio.count)...:
-                                    Text("Bravo ! C'est fini.")
+                                    Text("Congratulations! You're done.")
                                 default:
                                     Text("")
                             }
@@ -154,7 +148,7 @@ struct ContentView: View {
                                 gameData.clicks += 1
                             }
                         }, label: {
-                            Text("En lire plus")
+                            Text("Read more")
                                 .frame(maxWidth: 256)
                                 .padding()
                                 .foregroundStyle(Color.white)
@@ -179,6 +173,8 @@ struct ContentView: View {
                     gameBar()
                 }
                 ScrollView {
+                    Text("BioClicker")
+                        .font(.largeTitle)
                     HStack {
                         Text(gameData.bio.prefix(Int(gameData.characters)))
                             .multilineTextAlignment(.leading)
@@ -197,34 +193,33 @@ struct ContentView: View {
                         .resizable()
                         .aspectRatio(contentMode: .fit)
                         .frame(width: 20, height: 20)
-                    Text("BioClicker")
+                    Text("Try BioClicker")
                 }
             }
         }
 }
-    
     func otherActivities() -> some View {
-        Section(header: Text("Autres activités")) {
+        Section(header: Text("Other activities")) {
             HStack {
                 Image(systemName: "text.book.closed.fill")
                     .resizable()
                     .aspectRatio(contentMode: .fit)
                     .frame(width: 20, height: 20)
-                Text("Publie des recueils de poésie, nouvelles...")
+                Text("Published poetry and novels")
             }
             HStack {
                 Image(systemName: "microphone.fill")
                     .resizable()
                     .aspectRatio(contentMode: .fit)
                     .frame(width: 20, height: 20)
-                Text("Présente et produit des podcasts")
+                Text("Hosts and produces podcasts")
             }
             HStack {
                 Image(systemName: "music.quarternote.3")
                     .resizable()
                     .aspectRatio(contentMode: .fit)
                     .frame(width: 20, height: 20)
-                Text("Compose des musiques sur Game Boy")
+                Text("Composes music on a Game Boy")
             }
         }
     }
@@ -234,7 +229,7 @@ struct ContentView: View {
             List {
                 header()
                 gameView()
-                blockQuote()
+                favQuote()
                 otherActivities()
             }
         }
